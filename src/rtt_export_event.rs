@@ -9,6 +9,9 @@ use windows::{
     },
 };
 
+/// This is the 4.38 way of checking whether shared texture memory has been written.
+/// Once you get an instance of this (may fail of BMS is not running), you can use
+/// it to block until new data has been written using `wait_for_event()`.
 pub struct RttExportDone {
     handle: HANDLE,
 }
@@ -31,6 +34,7 @@ impl RttExportDone {
         }
     }
 
+    /// Will wait (blocking) for the event to be flagged by the BMS process.
     pub fn wait_for_event(&self) {
         let wait_result = unsafe { WaitForSingleObject(self.handle, u32::MAX) };
 

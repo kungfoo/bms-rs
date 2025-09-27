@@ -10,10 +10,15 @@ pub struct RttTextureAreaHeader {
     pub dd_surface_desc: DDSURFACEDESC2,
 }
 
+/// If you manage to get an instance of this (i.e. BMS is running and exporting),
+/// you can use it to read shared texture memory.
+/// Either the entire area, or subimages thereof
+/// by using `get_image()`.
 #[derive(Debug)]
 pub struct RttTextures {
     pub image: RgbImage,
 }
+
 
 impl RttTextures {
     pub fn get_image(&self, left: u16, top: u16, right: u16, bottom: u16) -> RgbImage {
