@@ -1,8 +1,10 @@
 mod flight_data;
+mod flight_data2;
 mod intellivibe_data;
 mod string_data;
 
 pub use flight_data::FlightData;
+pub use flight_data2::FlightData2;
 pub use intellivibe_data::IntellivibeData;
 pub use string_data::*;
 
