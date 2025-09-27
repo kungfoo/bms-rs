@@ -51,6 +51,7 @@ pub enum FlyStates {
 /// RTT area indices
 #[repr(u8)]
 #[derive(Debug, Default)]
+#[allow(dead_code)]
 pub enum RTTAreas {
     #[default]
     RttHud = 0,
@@ -118,7 +119,7 @@ pub struct FlightData2 {
     pub tacan_info: [TacanSources; TacanSources::NumberOfSources as usize], // Tacan band/mode settings for UFC and AUX COMM
 
     //VERSION 2/7
-    pub alt_cal_reading: u32, // barometric altitude calibration (depends on CalType)
+    pub alt_cal_reading: i32, // barometric altitude calibration (depends on CalType)
     pub alt_bits: AltBits,    // various altimeter bits, see AltBits enum for details
     pub power_bits: PowerBits, // Ownship power bus / generator states, see PowerBits enum for details
     pub blink_bits: BlinkBits, // Cockpit indicator lights blink status, see BlinkBits enum for details
@@ -126,16 +127,16 @@ pub struct FlightData2 {
     // existing on/off bits. It's up to the external program to implement the
     // *actual* blinking.
     pub cmds_mode: CmdsModes, // Ownship CMDS mode state, see CmdsModes enum for details
-    pub uhf_panel_preset: u32, // BUP UHF channel preset (F16), radio 1 preset (other aircraft).
+    pub uhf_panel_preset: i32, // BUP UHF channel preset (F16), radio 1 preset (other aircraft).
 
     // VERSION 3
-    pub uhf_panel_frequency: u32, // BUP UHF channel frequency, radio 1 frequency (other aircraft).
+    pub uhf_panel_frequency: i32, // BUP UHF channel frequency, radio 1 frequency (other aircraft).
     pub cabin_alt: f32,           // Ownship cabin altitude
     pub hyd_pressure_a: f32,      // Ownship Hydraulic Pressure A
     pub hyd_pressure_b: f32,      // Ownship Hydraulic Pressure B
-    pub current_time: u32,        // Current time in seconds (max 60 * 60 * 24)
-    pub vehicle_acd: u16, // Ownship ACD index number, i.e. which aircraft type are we flying.
-    pub version_num: u32, // Version of FlightData2 mem area
+    pub current_time: i32,        // Current time in seconds (max 60 * 60 * 24)
+    pub vehicle_acd: i16, // Ownship ACD index number, i.e. which aircraft type are we flying.
+    pub version_num: i32, // Version of FlightData2 mem area
 
     // VERSION 4
     pub fuel_flow2: f32, // Ownship fuel flow2 (Lbs/Hour)
@@ -181,7 +182,7 @@ pub struct FlightData2 {
     pub instr_light: InstrLight, // (unsigned char) current instrument backlight brightness setting, see InstrLight enum for details
 
     // VERSION 15
-    pub betty_bits: u32,        // see BettyBits enum for details
+    pub betty_bits: BettyBits,  // see BettyBits enum for details
     pub misc_bits: MiscBits,    // see MiscBits enum for details
     pub ralt: f32, // radar altitude (only valid/ reliable if MiscBit "RALT_Valid" is set)
     pub bingo_fuel: f32, // bingo fuel level
@@ -218,15 +219,29 @@ pub struct FlightData2 {
     pub radio2_preset: i32,    // Radio 2 channel preset (if present).
     pub radio2_frequency: i32, // Radio 2 channel frequency (if present).
 
-    // VERSION 21
-    pub tacan_ils_frequency: i32, // Tacan ILS (110.30 = 11030). Valid interval [108.10, 111.95].
-
     // IFF transponder currently active (as seen from outside) codes, negative for OFF or n/a
     pub iff_transponder_active_code1: u8,    // mode 1
     pub iff_transponder_active_code2: i16,   // mode 2
     pub iff_transponder_active_code3_a: i16, // mode 3A
     pub iff_transponder_active_code_c: i16,  // mode C
     pub iff_transponder_active_code4: i16,   // mode 4; assumes the correct codeword
+
+    // VERSION 21
+    pub tacan_ils_frequency: i32, // Tacan ILS (110.30 = 11030). Valid interval [108.10, 111.95].
+
+    // VERSION 22
+    pub desired_rtt_fps: i32, // The configured RTT export FPS value, g_nRTTExport_FPS
+
+    // SIDE SLIP ANGLE
+    pub side_slipdeg: f32, // ADI side Slip
+}
+
+impl std::ops::Deref for FlightData2 {
+    type Target = i32;
+
+    fn deref(&self) -> &Self::Target {
+        &self.desired_rtt_fps
+    }
 }
 
 unsafe impl Send for FlightData2 {}
@@ -309,6 +324,8 @@ impl Default for FlightData2 {
             iff_transponder_active_code3_a: Default::default(),
             iff_transponder_active_code_c: Default::default(),
             iff_transponder_active_code4: Default::default(),
+            desired_rtt_fps: Default::default(),
+            side_slipdeg: Default::default(),
         }
     }
 }

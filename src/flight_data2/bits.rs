@@ -54,6 +54,33 @@ bitflags! {
     }
 }
 
+bitflags! {
+    // Bitching Betty VMS sounds playing
+    #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, Hash)]
+    pub struct BettyBits : u32
+    {
+        const None = 0x0;
+        const Betty_Allwords       = 0x00001;
+        const Betty_Pullup         = 0x00002;
+        const Betty_Altitude       = 0x00004;
+        const Betty_Warning        = 0x00008;
+        const Betty_Jammer         = 0x00010;
+        const Betty_Counter        = 0x00020;
+        const Betty_ChaffFlare     = 0x00040;
+        const Betty_ChaffFlare_Low = 0x00080;
+        const Betty_ChaffFlare_Out = 0x00100;
+        const Betty_Lock           = 0x00200;
+        const Betty_Caution        = 0x00400;
+        const Betty_Bingo          = 0x00800;
+        const Betty_Data           = 0x01000;
+        const Betty_IFF            = 0x02000;
+        const Betty_Lowspeed       = 0x04000;
+        const Betty_Beeps          = 0x08000;
+        const Betty_AOA            = 0x10000;
+        const Betty_MaxG           = 0x20000;
+    }
+}
+
 // ECM indicator states
 bitflags! {
     #[derive(Clone, Copy, Default, Debug, PartialEq, Eq, Hash)]
