@@ -1,11 +1,13 @@
 mod flight_data;
 mod flight_data2;
 mod intellivibe_data;
+mod rtt_textures;
 mod string_data;
 
 pub use flight_data::FlightData;
 pub use flight_data2::FlightData2;
 pub use intellivibe_data::IntellivibeData;
+pub use rtt_textures::*;
 pub use string_data::*;
 
 use std::mem::size_of;
@@ -41,6 +43,13 @@ where
     /// Do not use directly unless you know what you're doing.
     pub unsafe fn new(name: &'a str) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         Self::new_with_size(name, size_of::<T>())
+    }
+
+    pub unsafe fn new_with_offset(
+        name: &'a str,
+        offset: usize,
+    ) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
+        Self::new_with_offset_and_size(name, offset, size_of::<T>())
     }
 
     /// # Safety
