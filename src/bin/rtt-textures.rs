@@ -1,16 +1,36 @@
+use bms_sm::RttExportDone;
 use bms_sm::RttTextures;
-
-use std::fs::File;
-use std::io::BufWriter;
+use std::time::Duration;
+use std::time::Instant;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let textures = RttTextures::read().unwrap();
+    println!("Waiting for event to be available...");
+    let mut waiting;
+    loop {
+        waiting = RttExportDone::new();
+        if waiting.is_ok() {
+            break;
+        }
+    }
 
-    let output = File::create("output.jpeg")?;
-    let writer = BufWriter::new(output);
+    // now we can just unwrap on it.
+    let rtt_export_done = RttExportDone::new().unwrap();
 
-    let mut encoder = image::codecs::jpeg::JpegEncoder::new_with_quality(writer, 90); // 0–100 quality
-    encoder.encode_image(&textures.image)?;
+    let mut update_count = 0;
+    let mut last_report = Instant::now();
 
-    Ok(())
+    loop {
+        rtt_export_done.wait_for_event();
+
+        let _textures = RttTextures::read().unwrap();
+
+        update_count += 1;
+
+        let now = Instant::now();
+        if now.duration_since(last_report) >= Duration::from_secs(1) {
+            println!("Updates per second: {}", update_count);
+            update_count = 0;
+            last_report = now;
+        }
+    }
 }
