@@ -6,7 +6,7 @@ mod rtt_textures;
 mod string_data;
 
 pub use flight_data::FlightData;
-pub use flight_data2::FlightData2;
+pub use flight_data2::*;
 pub use intellivibe_data::IntellivibeData;
 pub use rtt_export_event::RttExportDone;
 pub use rtt_textures::RttTextures;

@@ -50,16 +50,16 @@ pub enum FlyStates {
 
 /// RTT area indices
 #[repr(u8)]
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 #[allow(dead_code)]
-pub enum RTTAreas {
+pub enum RttArea {
     #[default]
     Hud = 0,
     Pfl = 1,
     Ded = 2,
     Rwr = 3,
-    Mfdleft = 4,
-    Mfdright = 5,
+    MfdLeft = 4,
+    MfdRight = 5,
     Hms = 6,
     NoOfAreas = 7,
 }
@@ -170,7 +170,7 @@ pub struct FlightData2 {
     //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
     pub rtt_size: [u16; 2], // RTT overall width and height
     //[MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)RTT_areas.RTT_noOfAreas * 4)]
-    pub rtt_area: [u16; (RTTAreas::NoOfAreas as usize) * 4], // For each area: left/top/right/bottom
+    pub rtt_area: [u16; (RttArea::NoOfAreas as usize) * 4], // For each area: left/top/right/bottom
 
     // VERSION 13
     pub iff_backup_mode1_digit1: u8, // IFF panel backup Mode1 digit 1
@@ -234,6 +234,27 @@ pub struct FlightData2 {
 
     // SIDE SLIP ANGLE
     pub side_slipdeg: f32, // ADI side Slip
+}
+
+impl FlightData2 {
+    pub fn get_rtt_area(&self, area: RttArea) -> RttAreaCoords {
+        let offset = area as usize * 4;
+        RttAreaCoords {
+            left: self.rtt_area[offset],
+            top: self.rtt_area[offset + 1],
+            right: self.rtt_area[offset + 2],
+            bottom: self.rtt_area[offset + 3],
+            area,
+        }
+    }
+}
+
+pub struct RttAreaCoords {
+    pub left: u16,
+    pub top: u16,
+    pub right: u16,
+    pub bottom: u16,
+    pub area: RttArea,
 }
 
 impl std::ops::Deref for FlightData2 {

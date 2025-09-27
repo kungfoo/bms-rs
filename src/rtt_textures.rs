@@ -1,4 +1,5 @@
 use crate::{MemoryFile, RawMemoryFile};
+use image::imageops::crop_imm;
 use image::RgbImage;
 
 use windows::Win32::Graphics::DirectDraw::DDSURFACEDESC2;
@@ -12,6 +13,14 @@ pub struct RttTextureAreaHeader {
 #[derive(Debug)]
 pub struct RttTextures {
     pub image: RgbImage,
+}
+
+impl RttTextures {
+    pub fn get_image(&self, left: u16, top: u16, right: u16, bottom: u16) -> RgbImage {
+        let width = (right - left) as u32;
+        let height = (bottom - top) as u32;
+        crop_imm(&self.image, left as u32, top as u32, width, height).to_image()
+    }
 }
 
 impl RttTextures {

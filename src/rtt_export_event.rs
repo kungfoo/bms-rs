@@ -27,9 +27,7 @@ impl RttExportDone {
 
         match handle {
             Ok(handle) => Ok(RttExportDone { handle }),
-            Err(e) => {
-                Err(Box::new(e))
-            }
+            Err(e) => Err(Box::new(e)),
         }
     }
 
