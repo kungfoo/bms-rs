@@ -8,8 +8,8 @@ mod bits;
 #[derive(Debug, Default)]
 pub enum TacanSources {
     #[default]
-    UFC = 0,
-    AUX = 1,
+    Ufc = 0,
+    Aux = 1,
     NumberOfSources = 2,
 }
 
@@ -18,12 +18,12 @@ pub enum TacanSources {
 #[derive(Debug, Default)]
 pub enum CmdsModes {
     #[default]
-    CmdsOFF = 0,
-    CmdsSTBY = 1,
-    CmdsMAN = 2,
-    CmdsSEMI = 3,
-    CmdsAUTO = 4,
-    CmdsBYP = 5,
+    Off = 0,
+    Stby = 1,
+    Man = 2,
+    Semi = 3,
+    Auto = 4,
+    Byp = 5,
 }
 // u8
 #[repr(u8)]
@@ -31,8 +31,8 @@ pub enum CmdsModes {
 pub enum NavModes {
     #[default]
     IlsTacan = 0,
-    TACAN = 1,
-    NAV = 2,
+    Tacan = 1,
+    Nav = 2,
     IlsNav = 3,
 }
 
@@ -41,11 +41,11 @@ pub enum NavModes {
 pub enum FlyStates {
     #[default]
     InUi = 0, // UI      - in the UI
-    LOADING = 1, // UI>3D   - loading the sim data
-    WAITING = 2, // UI>3D   - waiting for other players
-    FLYING = 3,  // 3D      - flying
-    DEAD = 4,    // 3D>Dead - dead, waiting to respawn
-    UNKNOWN = 5, // ???
+    Loading = 1, // UI>3D   - loading the sim data
+    Waiting = 2, // UI>3D   - waiting for other players
+    Flying = 3,  // 3D      - flying
+    Dead = 4,    // 3D>Dead - dead, waiting to respawn
+    Unknown = 5, // ???
 }
 
 /// RTT area indices
@@ -54,14 +54,14 @@ pub enum FlyStates {
 #[allow(dead_code)]
 pub enum RTTAreas {
     #[default]
-    RttHud = 0,
-    RttPfl = 1,
-    RttDed = 2,
-    RttRwr = 3,
-    RttMfdleft = 4,
-    RttMfdright = 5,
-    RttHms = 6,
-    RttNoOfAreas = 7,
+    Hud = 0,
+    Pfl = 1,
+    Ded = 2,
+    Rwr = 3,
+    Mfdleft = 4,
+    Mfdright = 5,
+    Hms = 6,
+    NoOfAreas = 7,
 }
 
 // instrument backlight brightness
@@ -69,9 +69,9 @@ pub enum RTTAreas {
 #[derive(Debug, Default)]
 pub enum InstrLight {
     #[default]
-    InstrLightOff = 0,
-    InstrLightDim = 1,
-    InstrLightBrt = 2,
+    Off = 0,
+    Dim = 1,
+    Brt = 2,
 }
 
 // flood console brightness
@@ -79,13 +79,13 @@ pub enum InstrLight {
 #[derive(Debug, Default)]
 pub enum FloodConsole {
     #[default]
-    FloodConsoleOff = 0,
-    FloodConsole1 = 1,
-    FloodConsole2 = 2,
-    FloodConsole3 = 3,
-    FloodConsole4 = 4,
-    FloodConsole5 = 5,
-    FloodConsole6 = 6,
+    Off = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+    _5 = 5,
+    _6 = 6,
 }
 
 // RWR jamming statesi
@@ -94,9 +94,9 @@ pub enum FloodConsole {
 #[derive(Debug, Default, Copy, Clone)]
 pub enum JammingStates {
     #[default]
-    JammedNo = 0,
-    JammedYes = 1,
-    JammedShould = 2,
+    No = 0,
+    Yes = 1,
+    Should = 2,
 }
 
 const RWRINFO_SIZE: usize = 512;
@@ -170,7 +170,7 @@ pub struct FlightData2 {
     //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
     pub rtt_size: [u16; 2], // RTT overall width and height
     //[MarshalAs(UnmanagedType.ByValArray, SizeConst = (int)RTT_areas.RTT_noOfAreas * 4)]
-    pub rtt_area: [u16; (RTTAreas::RttNoOfAreas as usize) * 4], // For each area: left/top/right/bottom
+    pub rtt_area: [u16; (RTTAreas::NoOfAreas as usize) * 4], // For each area: left/top/right/bottom
 
     // VERSION 13
     pub iff_backup_mode1_digit1: u8, // IFF panel backup Mode1 digit 1

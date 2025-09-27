@@ -45,6 +45,10 @@ where
         Self::new_with_size(name, size_of::<T>())
     }
 
+    /// # Safety
+    /// If the generic struct given does not match the memory layout,
+    /// this is probably going to make shit hit the fan
+    /// Do not use directly unless you know what you're doing.
     pub unsafe fn new_with_offset(
         name: &'a str,
         offset: usize,

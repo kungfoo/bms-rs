@@ -1,6 +1,5 @@
 use bms_sm::RttTextures;
 
-use image::{ImageBuffer, RgbImage};
 use std::fs::File;
 use std::io::BufWriter;
 
